@@ -5,7 +5,7 @@ from datetime import datetime
 app = FastAPI(
     title="API Fila de Atendimento",
     description="Projeto da disciplina de Desenvolvimento de APIs e Microsserviços",
-    version="1.0"
+    version="2.0"
 )
 
 fila = []
@@ -57,14 +57,26 @@ def adicionar_cliente(cliente: Cliente):
         )
 
     novo_cliente = {
-        "posicao": len(fila) + 1,
+        "posicao": 0,
         "nome": cliente.nome,
         "tipo": cliente.tipo,
         "data_chegada": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
         "atendido": False
     }
 
-    fila.append(novo_cliente)
+    if cliente.tipo == "P":
+        indice = 0
+
+        while indice < len(fila) and fila[indice]["tipo"] == "P":
+            indice += 1
+
+        fila.insert(indice, novo_cliente)
+
+    else:
+        fila.append(novo_cliente)
+
+    for i, pessoa in enumerate(fila, start=1):
+        pessoa["posicao"] = i
 
     return novo_cliente
 
