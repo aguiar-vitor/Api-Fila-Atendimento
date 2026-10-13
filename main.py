@@ -14,7 +14,6 @@ class Cliente(BaseModel):
     nome: str = Field(..., max_length=20)
     tipo: str = Field(..., min_length=1, max_length=1)
 
-
 @app.get("/")
 def home():
     return {"mensagem": "API funcionando!"}
@@ -47,3 +46,24 @@ def buscar_cliente(id: int):
         status_code=404,
         detail="Cliente não encontrado."
     )
+
+@app.post("/fila")
+def adicionar_cliente(cliente: Cliente):
+
+    if cliente.tipo not in ["N", "P"]:
+        raise HTTPException(
+            status_code=400,
+            detail="O tipo deve ser N ou P."
+        )
+
+    novo_cliente = {
+        "posicao": len(fila) + 1,
+        "nome": cliente.nome,
+        "tipo": cliente.tipo,
+        "data_chegada": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
+        "atendido": False
+    }
+
+    fila.append(novo_cliente)
+
+    return novo_cliente
