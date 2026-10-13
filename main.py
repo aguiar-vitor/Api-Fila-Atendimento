@@ -79,3 +79,27 @@ def atender_cliente():
             cliente["posicao"] -= 1
 
     return {"mensagem": "Fila atualizada com sucesso."}
+
+@app.delete("/fila/{id}")
+def remover_cliente(id: int):
+
+    for cliente in fila:
+
+        if cliente["posicao"] == id and not cliente["atendido"]:
+
+            fila.remove(cliente)
+
+            for i, pessoa in enumerate(
+                [c for c in fila if not c["atendido"]],
+                start=1
+            ):
+                pessoa["posicao"] = i
+
+            return {
+                "mensagem": f"Cliente da posição {id} removido com sucesso."
+            }
+
+    raise HTTPException(
+        status_code=404,
+        detail="Cliente não encontrado."
+    )
