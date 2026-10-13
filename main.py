@@ -67,3 +67,15 @@ def adicionar_cliente(cliente: Cliente):
     fila.append(novo_cliente)
 
     return novo_cliente
+
+@app.put("/fila")
+def atender_cliente():
+
+    for cliente in fila:
+        if cliente["posicao"] == 1:
+            cliente["posicao"] = 0
+            cliente["atendido"] = True
+        elif not cliente["atendido"]:
+            cliente["posicao"] -= 1
+
+    return {"mensagem": "Fila atualizada com sucesso."}
