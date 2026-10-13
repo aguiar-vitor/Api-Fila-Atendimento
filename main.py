@@ -5,7 +5,7 @@ from datetime import datetime
 app = FastAPI(
     title="API Fila de Atendimento",
     description="Projeto da disciplina de Desenvolvimento de APIs e Microsserviços",
-    version="2.0"
+    version="2.1"
 )
 
 fila = []
@@ -16,8 +16,19 @@ class Cliente(BaseModel):
 
 @app.get("/")
 def home():
-    return {"mensagem": "API funcionando!"}
-
+    return {
+        "titulo": "API Fila de Atendimento",
+        "versao": "2.1",
+        "descricao": "Projeto da disciplina de Desenvolvimento de APIs e Microsserviços",
+        "endpoints": {
+            "GET /fila": "Lista clientes não atendidos",
+            "GET /fila/{id}": "Busca cliente pela posição",
+            "POST /fila": "Adiciona cliente na fila",
+            "PUT /fila": "Realiza um atendimento",
+            "DELETE /fila/{id}": "Remove cliente da fila"
+        },
+        "documentacao": "/docs"
+    }
 
 @app.get("/fila")
 def listar_fila():
