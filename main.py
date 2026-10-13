@@ -5,7 +5,7 @@ from datetime import datetime
 app = FastAPI(
     title="API Fila de Atendimento",
     description="Projeto da disciplina de Desenvolvimento de APIs e Microsserviços",
-    version="2.0"
+    version="1.0"
 )
 
 fila = []
